@@ -1,38 +1,37 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { getLocalStorage, setLocalStorage } from '../utils/localStorage';
+import React, { createContext, useEffect, useState } from "react";
+import { getLocalStorage, setLocalStorage } from "../utils/localStorage.jsx";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [userData, setUserData] = useState(null);
-    //localStorage.clear()
+  const [userData, setUserData] = useState(null);
+  //localStorage.clear()
 
-    useEffect(() => {
-        // Only set localStorage if it's empty (to prevent overwriting)
-        if (!localStorage.getItem("employees")) {
-            setLocalStorage();
-        }
-            if (!localStorage.getItem("admin")) {
-                setLocalStorage();
-        
-        }
+  useEffect(() => {
+    // Only set localStorage if it's empty (to prevent overwriting)
+    if (!localStorage.getItem("employees")) {
+      setLocalStorage();
+    }
+    if (!localStorage.getItem("admin")) {
+      setLocalStorage();
+    }
 
-        const { employees } = getLocalStorage();
-        setUserData(employees);
-    }, []);
+    const { employees } = getLocalStorage();
+    setUserData(employees);
+  }, []);
 
-    // Update localStorage whenever userData changes
-    useEffect(() => {
-        if (userData) {
-            localStorage.setItem("employees", JSON.stringify(userData));
-        }
-    }, [userData]);
+  // Update localStorage whenever userData changes
+  useEffect(() => {
+    if (userData) {
+      localStorage.setItem("employees", JSON.stringify(userData));
+    }
+  }, [userData]);
 
-    return (
-        <AuthContext.Provider value={[userData, setUserData]}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={[userData, setUserData]}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
